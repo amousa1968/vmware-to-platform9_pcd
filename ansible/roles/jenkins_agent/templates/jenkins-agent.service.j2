@@ -1,0 +1,13 @@
+[Unit]
+Description=Jenkins Agent
+After=network.target
+
+[Service]
+User=jenkins
+WorkingDirectory=/home/jenkins
+ExecStart=/usr/bin/java -jar /home/jenkins/agent.jar -jnlpUrl {{ jenkins_url }}/computer/{{ agent_name }}/slave-agent.jnlp -secret {{ agent_secret }} -workDir /home/jenkins
+Restart=always
+RestartSec=10
+
+[Install]
+WantedBy=multi-user.target

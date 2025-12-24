@@ -1,0 +1,11 @@
+---
+- name: Provision Jenkins Agent on Platform9 PCD
+  hosts: jenkins_agents
+  become: yes
+  roles:
+    - jenkins_agent
+
+  vars:
+    jenkins_url: "{{ lookup('env', 'JENKINS_URL') }}"
+    agent_secret: "{{ lookup('env', 'JENKINS_AGENT_SECRET') }}"
+    agent_name: "{{ inventory_hostname }}"
