@@ -1,0 +1,13 @@
+auth_url    = "https://platform9.example.com:5000/v3"
+user_name   = "testuser"
+password    = "testpassword"
+tenant_name = "testtenant"
+region      = "RegionOne"
+vm_name     = "test-vm"
+image_name  = "ubuntu-20.04"
+flavor_name = "m1.small"
+network_name = "test-network"
+subnet_name  = "test-subnet"
+subnet_cidr  = "192.168.1.0/24"
+volume_name  = "test-volume"
+size         = 10

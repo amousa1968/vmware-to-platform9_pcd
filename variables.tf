@@ -57,6 +57,7 @@ variable "subnet_cidr" {
 variable "security_groups" {
   description = "List of security groups"
   type        = list(string)
+  default     = ["default"]
 }
 
 variable "volume_name" {

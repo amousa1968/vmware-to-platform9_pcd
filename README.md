@@ -89,6 +89,145 @@ After successful deployment, the following outputs will be available:
 3. Make your changes
 4. Submit a pull request
 
+## Example Terraform Execution
+
+Here is an example of running the Terraform commands to initialize, validate, and plan the deployment:
+
+```bash
+terraform init && terraform validate && terraform plan
+```
+
+Output:
+
+```
+Initializing the backend...
+Initializing modules...
+Initializing provider plugins...
+- Reusing previous version of terraform-provider-openstack/openstack from the dependency lock file
+- Using previously-installed terraform-provider-openstack/openstack v1.53.0
+
+Terraform has been successfully initialized!
+
+You may now begin working with Terraform. Try running "terraform plan" to see
+any changes that are required for your infrastructure. All Terraform commands
+should now work.
+
+If you ever set or change modules or backend configuration for Terraform,
+rerun this command to reinitialize your working directory. If you forget, other
+commands will detect it and remind you to do so if necessary.
+Success! The configuration is valid.
+
+
+Terraform used the selected providers to generate the following execution plan.
+Resource actions are indicated with the following symbols:
+  + create
+
+Terraform will perform the following actions:
+
+  # module.network.openstack_networking_network_v2.network will be created
+  + resource "openstack_networking_network_v2" "network" {
+      + admin_state_up          = true
+      + all_tags                = (known after apply)
+      + availability_zone_hints = (known after apply)
+      + dns_domain              = (known after apply)
+      + external                = (known after apply)
+      + id                      = (known after apply)
+      + mtu                     = (known after apply)
+      + name                    = "test-network"
+      + port_security_enabled   = (known after apply)
+      + qos_policy_id           = (known after apply)
+      + region                  = (known after apply)
+      + shared                  = (known after apply)
+      + tenant_id               = (known after apply)
+      + transparent_vlan        = (known after apply)
+
+      + segments (known after apply)
+    }
+
+  # module.network.openstack_networking_subnet_v2.subnet will be created
+  + resource "openstack_networking_subnet_v2" "subnet" {
+      + all_tags          = (known after apply)
+      + cidr              = "192.168.1.0/24"
+      + enable_dhcp       = true
+      + gateway_ip        = (known after apply)
+      + id                = (known after apply)
+      + ip_version        = 4
+      + ipv6_address_mode = (known after apply)
+      + ipv6_ra_mode      = (known after apply)
+      + name              = "test-subnet"
+      + network_id        = (known after apply)
+      + no_gateway        = false
+      + region            = (known after apply)
+      + service_types     = (known after apply)
+      + tenant_id         = (known after apply)
+
+      + allocation_pool (known after apply)
+
+      + allocation_pools (known after apply)
+    }
+
+  # module.storage.openstack_blockstorage_volume_v3.volume will be created
+  + resource "openstack_blockstorage_volume_v3" "volume" {
+      + attachment        = (known after apply)
+      + availability_zone = (known after apply)
+      + id                = (known after apply)
+      + metadata          = (known after apply)
+      + name              = "test-volume"
+      + region            = (known after apply)
+      + size              = 10
+      + volume_type       = (known after apply)
+    }
+
+  # module.vm.openstack_compute_instance_v2.vm will be created
+  + resource "openstack_compute_instance_v2" "vm" {
+      + access_ip_v4        = (known after apply)
+      + access_ip_v6        = (known after apply)
+      + all_metadata        = (known after apply)
+      + all_tags            = (known after apply)
+      + availability_zone   = (known after apply)
+      + created             = (known after apply)
+      + flavor_id           = (known after apply)
+      + flavor_name         = "m1.small"
+      + force_delete        = false
+      + id                  = (known after apply)
+      + image_id            = (known after apply)
+      + image_name          = "ubuntu-20.04"
+      + name                = "test-vm"
+      + power_state         = "active"
+      + region              = (known after apply)
+      + security_groups     = [
+          + "default",
+        ]
+      + stop_before_destroy = false
+      + updated             = (known after apply)
+
+      + network {
+          + access_network = false
+          + fixed_ip_v4    = (known after apply)
+          + fixed_ip_v6    = (known after apply)
+          + floating_ip    = (known after apply)
+          + mac            = (known after apply)
+          + name           = "test-network"
+          + port           = (known after apply)
+          + uuid           = (known after apply)
+        }
+    }
+
+Plan: 4 to add, 0 to change, 0 to destroy.
+
+Changes to Outputs:
+  + network_id = (known after apply)
+  + subnet_id  = (known after apply)
+  + vm_id      = (known after apply)
+  + vm_ip      = (known after apply)
+  + volume_id  = (known after apply)
+
+─────────────────────────────────────────────────────────────────────────────────────
+
+Note: You didn't use the -out option to save this plan, so Terraform can't guarantee
+to take exactly these actions if you run "terraform apply" now.
+```
+
 ## License
 
 This project is licensed under the MIT License.
