@@ -1,0 +1,59 @@
+{
+  "builders": [
+    {
+      "type": "openstack",
+      "identity_endpoint": "{{user `auth_url`}}",
+      "tenant_name": "{{user `tenant_name`}}",
+      "username": "{{user `username`}}",
+      "password": "{{user `password`}}",
+      "region": "{{user `region`}}",
+      "image_name": "jenkins-agent-base-{{timestamp}}",
+      "source_image_name": "{{user `source_image`}}",
+      "flavor": "{{user `flavor`}}",
+      "networks": ["{{user `network`}}"],
+      "security_groups": ["{{user `security_group`}}"],
+      "ssh_username": "ubuntu"
+    }
+  ],
+  "provisioners": [
+    {
+      "type": "shell",
+      "inline": [
+        "sudo apt-get update",
+        "sudo apt-get install -y openjdk-11-jdk git docker.io",
+        "sudo systemctl enable docker",
+        "sudo systemctl start docker",
+        "sudo usermod -aG docker ubuntu",
+        "curl -fsSL https://pkg.jenkins.io/debian-stable/jenkins.io-2023.key | sudo tee /usr/share/keyrings/jenkins-keyring.asc > /dev/null",
+        "echo deb [signed-by=/usr/share/keyrings/jenkins-keyring.asc] https://pkg.jenkins.io/debian-stable binary/ | sudo tee /etc/apt/sources.list.d/jenkins.list > /dev/null",
+        "sudo apt-get update",
+        "sudo apt-get install -y jenkins",
+        "sudo systemctl stop jenkins",
+        "sudo systemctl disable jenkins",
+        "sudo mkdir -p /home/ubuntu/jenkins",
+        "sudo chown ubuntu:ubuntu /home/ubuntu/jenkins"
+      ]
+    },
+    {
+      "type": "file",
+      "source": "ansible/playbooks/jenkins-agent.yml",
+      "destination": "/tmp/jenkins-agent.yml"
+    },
+    {
+      "type": "ansible-local",
+      "playbook_file": "/tmp/jenkins-agent.yml",
+      "extra_arguments": ["--extra-vars", "jenkins_agent_setup=true"]
+    }
+  ],
+  "variables": {
+    "auth_url": "",
+    "tenant_name": "",
+    "username": "",
+    "password": "",
+    "region": "",
+    "source_image": "ubuntu-20.04",
+    "flavor": "m1.medium",
+    "network": "",
+    "security_group": "default"
+  }
+}
